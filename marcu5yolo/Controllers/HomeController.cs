@@ -24,41 +24,45 @@ namespace marcu5yolo.Controllers
         }
 
         [Route("[controller]/[action]")]
-        public IActionResult imageUpload(FormViewModel viewModel)
+        public async Task<IActionResult> imageUploadAsync(FormViewModel viewModel)
         {
             var uploadedImage = viewModel.imageUpload;
-            string filepath = null;
-            if (uploadedImage != null && uploadedImage.ContentType.ToLower().StartsWith("image/"))
-            {
-                //    var root = he.WebRootPath;
-                //    root = root + "\\SubmittedInitiativeImg";
-                ////same file name problems
-                //var filename = Path.Combine(he.WebRootPath, Path.GetFileName(uploadedImage.FileName));
-                var name = Guid.NewGuid() + Path.GetFileName(uploadedImage.FileName);
-                var filename = Path.Combine(_he.WebRootPath, name);
+            var ms = new MemoryStream();
+            await uploadedImage.CopyToAsync(ms);
+            byte[] imageContents = ms.ToArray();
+            //string filepath = null;
+            //if (uploadedImage != null && uploadedImage.ContentType.ToLower().StartsWith("image/"))
+            //{
+            //    //    var root = he.WebRootPath;
+            //    //    root = root + "\\SubmittedInitiativeImg";
+            //    ////same file name problems
+            //    //var filename = Path.Combine(he.WebRootPath, Path.GetFileName(uploadedImage.FileName));
+            //    var name = Guid.NewGuid() + Path.GetFileName(uploadedImage.FileName);
+            //    var filename = Path.Combine(_he.WebRootPath, name);
 
-                uploadedImage.CopyTo(new FileStream(filename, FileMode.Create));
-                filepath = name;
-            }
-            FileInfo fi = new FileInfo(filepath);
-            string fileName = fi.Name;
-            byte[] fileContents = System.IO.File.ReadAllBytes(Path.Combine(_he.WebRootPath, filepath));
+            //    uploadedImage.CopyTo(new FileStream(filename, FileMode.Create));
+            //    filepath = name;
+            //}
+            //FileInfo fi = new FileInfo(filepath);
+            //string fileName = fi.Name;
+            //byte[] fileContents = await System.IO.File.ReadAllBytesAsync(Path.Combine(_he.WebRootPath, filepath));
 
-            Uri webService = new Uri(@"https://marcu5yolo.azurewebsites.net/prediction/image");
+            Uri webService = new Uri(@"https://marcu5yolo19.azurewebsites.net/prediction/image");
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, webService);
             requestMessage.Headers.ExpectContinue = false;
             MultipartFormDataContent form = new MultipartFormDataContent
             {
-                { new ByteArrayContent(fileContents, 0, fileContents.Length), "file", "pic.jpeg" }
+                { new ByteArrayContent(imageContents, 0, imageContents.Length), "file", "pic.jpeg" }
             };
 
             HttpClient client = new HttpClient();
-            Task<HttpResponseMessage> result = client.PostAsync(webService.AbsoluteUri, form);
+            HttpResponseMessage result = await client.PostAsync(webService.AbsoluteUri, form);
+            byte[] imageResponse = await result.Content.ReadAsByteArrayAsync();
             //ViewBag._image = File(result.Result.Content.ReadAsByteArrayAsync().Result, result.Result.GetType().ToString());
-            ViewBag.imageUrl = "data:" + result.Result.GetType().ToString()+"; base64," + Convert.ToBase64String(result.Result.Content.ReadAsByteArrayAsync().Result);
+            ViewBag.imageUrl = "data:image; base64," + Convert.ToBase64String(imageResponse);
             return View();
         }
 
-        
+
     }
 }
