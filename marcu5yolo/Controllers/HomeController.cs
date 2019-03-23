@@ -65,6 +65,7 @@ namespace marcu5yolo.Controllers
             return View();
         }
 
+        [Route("[controller]/[action]")]
         public IActionResult About()
         {
             ViewBag.SelectedNav = "About";
