@@ -20,6 +20,7 @@ namespace marcu5yolo.Controllers
         [Route("")]
         public IActionResult Index()
         {
+            ViewBag.SelectedNav = "Home";
             return View();
         }
 
@@ -60,9 +61,14 @@ namespace marcu5yolo.Controllers
             byte[] imageResponse = await result.Content.ReadAsByteArrayAsync();
             //ViewBag._image = File(result.Result.Content.ReadAsByteArrayAsync().Result, result.Result.GetType().ToString());
             ViewBag.imageUrl = "data:image; base64," + Convert.ToBase64String(imageResponse);
+            ViewBag.SelectedNav = "Home";
             return View();
         }
 
-
+        public IActionResult About()
+        {
+            ViewBag.SelectedNav = "About";
+            return View();
+        }
     }
 }

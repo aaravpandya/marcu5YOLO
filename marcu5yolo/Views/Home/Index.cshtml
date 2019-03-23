@@ -2,12 +2,42 @@
 @{
     ViewData["Title"] = "Index";
 }
-<form asp-action="imageUploadAsync" asp-controller="Home" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label class="lead" asp-for="imageUpload">Upload your Logo</label>
-        <input type="file" asp-for="imageUpload" />
-    </div>
+<div class="col-6 mx-auto">
+    <form asp-action="imageUploadAsync" asp-controller="Home" method="post" enctype="multipart/form-data">
+        @*<div class="form-group">
+            <label class="lead" asp-for="imageUpload">Upload your image: </label>
+            <input type="file" class="btn-dark" asp-for="imageUpload" />
+        </div>*@
+        @*<div class="input-group mb-3">
+
+            <div class="custom-file">
+                <input type="file" asp-for="imageUpload" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+        </div>*@
+        <div class="mx-auto text-center" style="padding-top:4vh">
+            <p>
+               Detect objects on any images by uploading an image below!
+            </p>
+        </div>
+        <div class="mx-auto text-center" style="padding-top:2vh">
+            <p>
+                Process might take 1-2 minutes. Please be patient :)
+            </p>
+        </div>
+        <div class="input-group" style="padding-top:10vh">
+            <div class="custom-file">
+                <input type="file" asp-for="imageUpload" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" required>
+                <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+            </div>
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04">Upload</button>
+            </div>
+        </div>
+    </form>
     <div>
-        <button type="submit" class="btn btn-primary lead">Upload</button>
+        <p>
+            <a href="@Url.Action("About", "Home")">More Details</a>
+        </p>
     </div>
-</form>
+</div>
