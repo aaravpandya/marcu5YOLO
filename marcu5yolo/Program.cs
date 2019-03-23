@@ -14,7 +14,7 @@ namespace marcu5yolo
     {
         public static void Main(string[] args)
         {
-            reateWebHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
