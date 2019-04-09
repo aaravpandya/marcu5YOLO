@@ -48,7 +48,7 @@ namespace marcu5yolo.Controllers
             //string fileName = fi.Name;
             //byte[] fileContents = await System.IO.File.ReadAllBytesAsync(Path.Combine(_he.WebRootPath, filepath));
 
-            Uri webService = new Uri(@"https://marcu5yolo19.azurewebsites.net/prediction/image");
+            Uri webService = new Uri(@"https://marcu5yolo2.azurewebsites.net/prediction/image");
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, webService);
             requestMessage.Headers.ExpectContinue = false;
             MultipartFormDataContent form = new MultipartFormDataContent
